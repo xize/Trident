@@ -22,6 +22,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.tridentsdk.Trident;
+import net.tridentsdk.bar.BarType;
 import net.tridentsdk.base.BoundingBox;
 import net.tridentsdk.base.Position;
 import net.tridentsdk.docs.InternalUseOnly;
@@ -34,7 +35,6 @@ import net.tridentsdk.event.player.PlayerDisconnectEvent;
 import net.tridentsdk.event.player.PlayerJoinEvent;
 import net.tridentsdk.event.player.PlayerMoveEvent;
 import net.tridentsdk.inventory.Item;
-import net.tridentsdk.meta.BarType;
 import net.tridentsdk.meta.ChatColor;
 import net.tridentsdk.meta.MessageBuilder;
 import net.tridentsdk.meta.block.Tile;
@@ -93,7 +93,7 @@ public class TridentPlayer extends OfflinePlayer {
         super(uuid, tag, world);
 
         this.connection = PlayerConnection.createPlayerConnection(connection, this);
-        inventory.sendTo(this);
+        // inventory.sendTo(this);
     }
 
     public static void sendAll(Packet packet) {
@@ -147,6 +147,7 @@ public class TridentPlayer extends OfflinePlayer {
             p.connection.sendPacket(new PacketPlayOutPlayerCompleteMove().set("location",
                     p.spawnLocation()).set("flags", (byte) 0));
 
+            /*
             sendAll(new PacketPlayOutPlayerListItem()
                     .set("action", 0)
                     .set("playerListData", new PlayerListDataBuilder[]{p.listData()}));
@@ -155,11 +156,11 @@ public class TridentPlayer extends OfflinePlayer {
 
             players().stream().filter(player -> !player.equals(p))
                     .forEach(player -> builders.add(((TridentPlayer) player).listData()));
-            TridentLogger.get().log(p.name + " has joined the server");
+                    */
 
-            p.connection.sendPacket(new PacketPlayOutPlayerListItem()
-                    .set("action", 0)
-                    .set("playerListData", builders.stream().toArray(value -> new PlayerListDataBuilder[value])));
+            // p.connection.sendPacket(new PacketPlayOutPlayerListItem()
+            //         .set("action", 0)
+            //         .set("playerListData", builders.stream().toArray(PlayerListDataBuilder[]::new)));
         });
 
         return p;
@@ -212,6 +213,7 @@ public class TridentPlayer extends OfflinePlayer {
 
         EventProcessor.fire(new PlayerJoinEvent(this));
 
+        TridentLogger.get().log(name + " has joined the server");
         MessageBuilder builder = new MessageBuilder(name + " has joined the server").color(ChatColor.YELLOW).build();
         for (Player player : players()) {
             TridentPlayer p = (TridentPlayer) player;
@@ -228,10 +230,10 @@ public class TridentPlayer extends OfflinePlayer {
 
                 metadata = new ProtocolMetadata();
                 p.encodeMetadata(metadata);
-                connection.sendPacket(new PacketPlayOutSpawnPlayer()
-                        .set("entityId", p.id)
-                        .set("player", p)
-                        .set("metadata", metadata));
+                // connection.sendPacket(new PacketPlayOutSpawnPlayer()
+                //         .set("entityId", p.id)
+                //         .set("player", p)
+                //         .set("metadata", metadata));
             }
         }
     }
