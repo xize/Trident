@@ -15,32 +15,30 @@
  * limitations under the License.
  */
 
-package net.tridentsdk.server.packets.play.out;
+package net.tridentsdk.server.packets.play.in;
 
 import io.netty.buffer.ByteBuf;
-import net.tridentsdk.server.netty.Codec;
-import net.tridentsdk.server.netty.packet.OutPacket;
+import net.tridentsdk.server.netty.ClientConnection;
+import net.tridentsdk.server.netty.packet.InPacket;
+import net.tridentsdk.server.netty.packet.Packet;
 
-public class PacketPlayOutPlayerListUpdate extends OutPacket {
-    protected String header;
-    protected String footer;
+/**
+ * This packet is sent when pressing the Use Item key (default: right click) with an item in hand.
+ */
+public class PacketPlayInUseItem extends InPacket {
 
     @Override
     public int id() {
-        return 0x47;
-    }
-
-    public String header() {
-        return this.header;
-    }
-
-    public String footer() {
-        return this.footer;
+        return 0x1D;
     }
 
     @Override
-    public void encode(ByteBuf buf) {
-        Codec.writeString(buf, this.header);
-        Codec.writeString(buf, this.footer);
+    public Packet decode(ByteBuf buf) {
+        return this;
+    }
+
+    @Override
+    public void handleReceived(ClientConnection connection) {
+        // TODO Handle
     }
 }

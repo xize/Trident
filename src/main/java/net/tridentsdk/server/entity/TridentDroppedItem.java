@@ -101,7 +101,7 @@ public class TridentDroppedItem extends TridentEntity implements DroppedItem {
 
         ProtocolMetadata metadata = new ProtocolMetadata();
         super.encodeMetadata(metadata);
-        metadata.setMeta(10, MetadataType.SLOT, new Slot(item));
+        metadata.setMeta(6, MetadataType.SLOT, new Slot(item));
 
         PacketPlayOutSpawnObject object = new PacketPlayOutSpawnObject();
         object.set("entityId", entityId());

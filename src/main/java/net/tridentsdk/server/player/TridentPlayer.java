@@ -181,7 +181,7 @@ public class TridentPlayer extends OfflinePlayer {
         protocolMeta.setMeta(10, MetadataType.BYTE, skinFlags);
         protocolMeta.setMeta(16, MetadataType.BYTE, (byte) 0); // hide cape, might need changing
         protocolMeta.setMeta(17, MetadataType.FLOAT, 0F); // absorption hearts TODO
-        protocolMeta.setMeta(18, MetadataType.INT, 0); // TODO scoreboard system (this value is the player's score)
+        //protocolMeta.setMeta(18, MetadataType.INT, 0); // TODO scoreboard system (this value is the player's score)
     }
 
     public boolean isLoggingIn() {
@@ -243,8 +243,8 @@ public class TridentPlayer extends OfflinePlayer {
         int distance = viewDistance();
         if (!loggingIn) {
             ThreadsHandler.chunkExecutor().execute(() -> {
-                knownChunks.clean(distance);
-                knownChunks.update(distance);
+                //knownChunks.clean(distance);
+                //knownChunks.update(distance);
             });
         }
 
@@ -296,7 +296,7 @@ public class TridentPlayer extends OfflinePlayer {
                 window().putItem(((TridentDroppedItem) item).item());
 
                 if(started > ((TridentDroppedItem) item).item().quantity()){
-                    SoundEffect soundEffect = loc.world().playSound(SoundEffectType.RANDOM_POP);
+                    SoundEffect soundEffect = loc.world().playSound(SoundEffectType.ENTITY_ITEM_PICKUP);
                     soundEffect.setPosition(position().asVector());
                     soundEffect.apply(this);
                 }
@@ -310,7 +310,7 @@ public class TridentPlayer extends OfflinePlayer {
                 }
             });
 
-            if (!items.isEmpty()) {
+            if (items.stream().filter(item -> ((TridentDroppedItem) item).canPickupItem()).findAny().isPresent()) {
                 window().sendTo(this);
             }
         }
@@ -547,7 +547,7 @@ public class TridentPlayer extends OfflinePlayer {
         }
 
         header = builder.asJson();
-        connection.sendPacket(new PacketPlayOutPlayerListUpdate()
+        connection.sendPacket(new PacketPlayOutPlayerListHeaderFooter()
                 .set("header", header)
                 .set("footer", footer == null ? "{\"text\": \"\"}" : footer));
     }
@@ -564,7 +564,7 @@ public class TridentPlayer extends OfflinePlayer {
         }
 
         footer = builder.asJson();
-        connection.sendPacket(new PacketPlayOutPlayerListUpdate()
+        connection.sendPacket(new PacketPlayOutPlayerListHeaderFooter()
                 .set("header", header == null ? "{\"text\": \"\"}" : header)
                 .set("footer", footer));
     }

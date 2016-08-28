@@ -21,25 +21,26 @@ import io.netty.buffer.ByteBuf;
 import net.tridentsdk.server.netty.Codec;
 import net.tridentsdk.server.netty.packet.OutPacket;
 
-public class PacketPlayOutTabComplete extends OutPacket {
-
-    protected String[] matches;
+public class PacketPlayOutPlayerListHeaderFooter extends OutPacket {
+    protected String header;
+    protected String footer;
 
     @Override
     public int id() {
-        return 0x0E;
+        return 0x47;
     }
 
-    public String[] matches() {
-        return this.matches;
+    public String header() {
+        return this.header;
+    }
+
+    public String footer() {
+        return this.footer;
     }
 
     @Override
     public void encode(ByteBuf buf) {
-        Codec.writeVarInt32(buf, this.matches.length);
-
-        for (String s : this.matches) {
-            Codec.writeString(buf, s);
-        }
+        Codec.writeString(buf, this.header);
+        Codec.writeString(buf, this.footer);
     }
 }

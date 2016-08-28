@@ -52,6 +52,7 @@ class Play extends ProtocolHandler {
         super.inPackets.put(0x09, PacketPlayInPluginMessage.class);
         super.inPackets.put(0x1B, PacketPlayInPlayerSpectate.class);
         super.inPackets.put(0x16, PacketPlayInPackStatus.class);
+        super.inPackets.put(0x1D, PacketPlayInUseItem.class);
 
         super.outPackets.put(0x1F, PacketPlayOutKeepAlive.class);
         super.outPackets.put(0x23, PacketPlayOutJoinGame.class);
@@ -123,7 +124,7 @@ class Play extends ProtocolHandler {
         super.outPackets.put(0x44, PacketPlayOutWorldBorder.class);
         super.outPackets.put(0x45, PacketPlayOutTitle.class);
         super.outPackets.put(0x46, PacketPlayOutSetCompression.class);
-        super.outPackets.put(0x47, PacketPlayOutPlayerListUpdate.class);
+        super.outPackets.put(0x47, PacketPlayOutPlayerListHeaderFooter.class);
         super.outPackets.put(0x48, PacketPlayOutResourcePackSend.class);
         super.outPackets.put(0x49, PacketPlayOutUpdateEntityNBT.class);
     }
